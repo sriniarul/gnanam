@@ -3,7 +3,12 @@ version: '3'
 services:
   base:
     &base
-    build: ./docker/Dockerfile
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+      args:
+        BUNDLE_WITHOUT: ''
+        RAILS_ENV: 'development'
     tty: true
     stdin_open: true
     image: pupilfirst:development
@@ -16,15 +21,13 @@ services:
       dockerfile: ./docker/dockerfiles/rails.Dockerfile
     image: pupilfirst-rails:development
     volumes:
-      - ./:/app:delegated
+      - ./:/app
       - node_modules:/app/node_modules
       - packs:/app/public/packs
       - cache:/app/tmp/cache
       - bundle:/usr/local/bundle
     depends_on:
       - postgres
-      - rescript
-      - webpack
     ports:
       - 3000:3000
     env_file: .env
@@ -52,7 +55,7 @@ services:
       dockerfile: ./docker/dockerfiles/webpack.Dockerfile
     image: pupilfirst-webpack:development
     volumes:
-      - ./:/app:delegated
+      - ./:/app
       - node_modules:/app/node_modules # Node modules shared across containers
       - packs:/app/public/packs
       - cache:/app/tmp/cache
@@ -64,6 +67,9 @@ services:
       - NODE_ENV=development
       - RAILS_ENV=development
     entrypoint: docker/entrypoints/webpack.sh
+    depends_on:
+      - postgres
+      - rescript
     command: [ "yarn", "run", "wds" ]
 
   rescript:
@@ -73,7 +79,7 @@ services:
       dockerfile: ./docker/dockerfiles/rescript.Dockerfile
     image: pupilfirst-rescript:development
     volumes:
-      - ./:/app:delegated
+      - ./:/app
       - node_modules:/app/node_modules # Node modules shared across containers
       - packs:/app/public/packs
       - cache:/app/tmp/cache
@@ -82,13 +88,15 @@ services:
       - NODE_ENV=development
       - RAILS_ENV=development
     entrypoint: docker/entrypoints/rescript.sh
+    depends_on:
+      - postgres
     command: [ "yarn", "run", "re:watch" ]
 
   postgres:
     image: postgres:12
     restart: always
     ports:
-      - '5432:5432'
+      - '5099:5432'
     volumes:
       - postgres:/data/postgres
     environment:

@@ -3,8 +3,7 @@ set -e
 
 rm -rf /app/tmp/pids/server.pid
 rm -rf /app/tmp/cache/*
-
-yarn install --check-files
+rm -f .bsb.lock
 
 echo "Waiting for yarn and bundle integrity"
 YARN="yarn check --integrity"
