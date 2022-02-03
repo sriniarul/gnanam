@@ -8,6 +8,8 @@ echo "Waiting for yarn and bundle integrity"
 YARN="yarn check --integrity"
 BUNDLE="bundle check"
 
+yarn install
+
 until $YARN && $BUNDLE
 do
   sleep 2;

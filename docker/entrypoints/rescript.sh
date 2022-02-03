@@ -6,10 +6,12 @@ rm -rf /app/tmp/cache/*
 rm -f .bsb.lock
 
 echo "Waiting for yarn and bundle integrity"
-YARN="yarn check --integrity"
+
+yarn install
+
 BUNDLE="bundle check"
 
-until $YARN && $BUNDLE
+until $BUNDLE
 do
   sleep 2;
 done

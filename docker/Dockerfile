@@ -1,9 +1,9 @@
 # This is a multi-stage build with two stages, where the first is used to precompile assets.
 FROM ruby:2.7.5
 
-WORKDIR /build
+WORKDIR /app
 
-ARG RAILS_ENV=production
+ARG RAILS_ENV=development
 ENV RAILS_ENV ${RAILS_ENV}
 
 # We need NodeJS for precompiling assets.
@@ -28,5 +28,3 @@ RUN corepack enable
 RUN yarn install
 
 COPY . /app
-
-WORKDIR /app
