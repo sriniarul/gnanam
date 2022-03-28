@@ -1348,7 +1348,6 @@ en:
       invalid_email: invalid email
       email_not_unique: email address not unique for student
       title_placeholder: Student, Coach, CEO, etc.
-      team_name: Team Name
       team_name_help: Students with same team name will be grouped together; this will not affect existing teams in the course.
       team_name_placeholder: Avengers, Fantastic Four, etc.
       add_list: Add to List
